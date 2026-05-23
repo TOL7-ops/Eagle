@@ -46,7 +46,7 @@ export default function HeroSection() {
       </div>
 
       {/* ── Content ── */}
-      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-32 pb-20 lg:px-10">
+      <div className="relative mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-19 pb-20 lg:px-10">
         <div className="grid items-center gap-12 lg:grid-cols-12">
 
           {/* Left — copy */}

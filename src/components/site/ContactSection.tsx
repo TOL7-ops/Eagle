@@ -31,27 +31,47 @@ const contactItems = [
 ];
 
 export default function ContactSection() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
   const [loading, setLoading] = useState(false);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     const parsed = schema.safeParse(form);
+
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Please check the form");
       return;
     }
+
     setLoading(true);
+
     setTimeout(() => {
       toast.success("Thank you! We'll get back to you shortly.");
-      setForm({ name: "", email: "", phone: "", message: "" });
+
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+
       setLoading(false);
     }, 800);
   };
 
   return (
-    <section id="contact" className="relative py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
+    <section
+      id="contact"
+      className="relative overflow-hidden py-14 sm:py-20 lg:py-28"
+    >
+      <div className="mx-auto w-full max-w-7xl px-3 sm:px-6 lg:px-10">
         <SectionHeading
           center
           eyebrow="Get In Touch"
@@ -59,50 +79,55 @@ export default function ContactSection() {
           subtitle="Reach out for a quote, consultation, or just to say hello. Our team is ready."
         />
 
-        <div className="mt-16 grid gap-10 lg:grid-cols-5">
-          {/* Info */}
+        <div className="mt-8 grid gap-5 lg:mt-16 lg:grid-cols-5 lg:gap-10">
+          {/* Contact Info */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="lg:col-span-2"
+            className="space-y-4 lg:col-span-2"
           >
-            <div className="space-y-5">
-              {contactItems.map((c) => (
-                <div
-                  key={c.label}
-                  className="group flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-soft transition hover:border-gold hover:shadow-elegant"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-navy-deep/85 text-white shadow-soft">
-                    <c.icon className="h-5 w-5" />
+            {contactItems.map((c) => (
+              <div
+                key={c.label}
+                className="group flex items-start gap-3 rounded-2xl border border-border bg-card p-3 shadow-soft transition-all duration-300 hover:border-gold hover:shadow-elegant sm:p-4"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-navy-deep/90 text-white">
+                  <c.icon className="h-5 w-5" />
+                </div>
+
+                <div className="min-w-0 flex-1">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-royal">
+                    {c.label}
                   </div>
-                  <div>
-                    <div className="text-xs font-semibold uppercase tracking-widest text-royal">
-                      {c.label}
-                    </div>
+
+                  <div className="mt-1 space-y-1">
                     {c.lines.map((line) => (
-                      <div key={line} className="mt-0.5 text-foreground/85 break-words">
+                      <p
+                        key={line}
+                        className="break-words text-sm leading-relaxed text-foreground/85 sm:text-[15px]"
+                      >
                         {line}
-                      </div>
+                      </p>
                     ))}
                   </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
 
-            {/* Map placeholder */}
-            <div className="mt-6 overflow-hidden rounded-2xl border border-border shadow-soft">
+            {/* Map */}
+            <div className="overflow-hidden rounded-2xl border border-border shadow-soft">
               <iframe
                 title="Eagle Horizon location"
                 src="https://maps.google.com/maps?q=Aflao%20Ketu%20South%20Ghana&t=&z=12&ie=UTF8&iwloc=&output=embed"
-                className="h-64 w-full"
                 loading="lazy"
+                className="h-[200px] w-full border-0 sm:h-[280px]"
               />
             </div>
           </motion.div>
 
-          {/* Form */}
+          {/* Contact Form */}
           <motion.form
             onSubmit={onSubmit}
             initial={{ opacity: 0, x: 30 }}
@@ -111,33 +136,63 @@ export default function ContactSection() {
             transition={{ duration: 0.6 }}
             className="relative lg:col-span-3"
           >
-            <div className="absolute -inset-4 rounded-3xl bg-navy-gold-gradient opacity-10 blur-2xl" />
-            <div className="relative rounded-3xl border border-border bg-card p-8 shadow-elegant sm:p-10">
+            <div className="absolute inset-0 rounded-3xl bg-navy-gold-gradient opacity-10 blur-3xl" />
+
+            <div className="relative rounded-3xl border border-border bg-card p-4 shadow-elegant sm:p-6 lg:p-10">
               <div className="flex items-center gap-3">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gold-gradient text-navy-deep">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gold-gradient text-navy-deep sm:h-11 sm:w-11">
                   <MessageSquare className="h-5 w-5" />
                 </div>
-                <h3 className="font-display text-2xl font-bold text-navy-deep">Send us a message</h3>
+
+                <h3 className="font-display text-lg font-bold leading-tight text-navy-deep sm:text-2xl">
+                  Send us a message
+                </h3>
               </div>
 
-              <div className="mt-6 grid gap-5 sm:grid-cols-2">
-                <Field label="Full Name" id="name" value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
-                <Field label="Email" id="email" type="email" value={form.email} onChange={(v) => setForm({ ...form, email: v })} />
+              <div className="mt-5 grid gap-3 sm:grid-cols-2 sm:gap-5">
+                <Field
+                  label="Full Name"
+                  id="name"
+                  value={form.name}
+                  onChange={(v) => setForm({ ...form, name: v })}
+                />
+
+                <Field
+                  label="Email"
+                  id="email"
+                  type="email"
+                  value={form.email}
+                  onChange={(v) => setForm({ ...form, email: v })}
+                />
+
                 <div className="sm:col-span-2">
-                  <Field label="Phone" id="phone" type="tel" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
+                  <Field
+                    label="Phone"
+                    id="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={(v) => setForm({ ...form, phone: v })}
+                  />
                 </div>
+
                 <div className="sm:col-span-2">
-                  <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-navy-deep">
+                  <label
+                    htmlFor="message"
+                    className="mb-2 block text-sm font-medium text-navy-deep"
+                  >
                     Message
                   </label>
+
                   <textarea
                     id="message"
                     rows={5}
                     value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/20"
+                    onChange={(e) =>
+                      setForm({ ...form, message: e.target.value })
+                    }
                     placeholder="Tell us about your cargo, route, and timing..."
                     maxLength={1000}
+                    className="w-full resize-none rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/20"
                   />
                 </div>
               </div>
@@ -145,10 +200,10 @@ export default function ContactSection() {
               <button
                 type="submit"
                 disabled={loading}
-                className="group mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-navy px-7 py-3.5 font-semibold text-white shadow-elegant transition hover:bg-royal disabled:opacity-60 sm:w-auto"
+                className="group mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-navy px-5 py-3 text-sm font-semibold text-white shadow-elegant transition-all duration-300 hover:bg-royal disabled:opacity-60 sm:w-auto"
               >
                 {loading ? "Sending..." : "Send Message"}
-                <Send className="h-4 w-4 transition group-hover:translate-x-1" />
+                <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
             </div>
           </motion.form>
@@ -159,22 +214,34 @@ export default function ContactSection() {
 }
 
 function Field({
-  label, id, type = "text", value, onChange,
+  label,
+  id,
+  type = "text",
+  value,
+  onChange,
 }: {
-  label: string; id: string; type?: string; value: string; onChange: (v: string) => void;
+  label: string;
+  id: string;
+  type?: string;
+  value: string;
+  onChange: (v: string) => void;
 }) {
   return (
-    <div>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-navy-deep">
+    <div className="min-w-0">
+      <label
+        htmlFor={id}
+        className="mb-2 block text-sm font-medium text-navy-deep"
+      >
         {label}
       </label>
+
       <input
         id={id}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/20"
         maxLength={255}
+        className="w-full rounded-xl border border-input bg-background px-3 py-2.5 text-sm outline-none transition focus:border-royal focus:ring-2 focus:ring-royal/20"
       />
     </div>
   );

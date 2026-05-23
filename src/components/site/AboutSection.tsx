@@ -22,7 +22,8 @@ export default function AboutSection() {
             transition={{ duration: 0.7 }}
             className="relative"
           >
-            <div className="absolute -inset-4 rounded-3xl bg-navy-gold-gradient opacity-20 blur-2xl" />
+            {/* decorative glow: avoid negative inset on very small screens to prevent overflow */}
+            <div className="absolute inset-0 sm:-inset-4 rounded-3xl bg-navy-gold-gradient opacity-20 blur-2xl" />
             <div className="relative overflow-hidden rounded-3xl shadow-elegant">
               <img
                 src={about}
